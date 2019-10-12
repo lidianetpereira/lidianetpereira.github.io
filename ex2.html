@@ -5,6 +5,8 @@
     <title>Exercício 2</title>
     <!-- include three.js library -->
     <script src='js/three.js'></script>
+    <script src='js/OBJLoader.js'></script>
+    <script src='js/MTLLoader.js'></script>
     <!-- include jsartookit -->
     <script src="jsartoolkit5/artoolkit.min.js"></script>
     <script src="jsartoolkit5/artoolkit.api.js"></script>
@@ -20,13 +22,13 @@
 
         var arToolkitSource, arToolkitContext;
 
-        var markerHiro;
-
         let markerRoot;
 
-        let markerControls1;
+        let markerControls1, markerControls2, markerLetterA, markerLetterB, markerLetterC, markerLetterD, markerLetterF, markerLetterG;
 
-        let vis = false;
+        let sceneGroupModel;
+
+        let meshA, meshB, meshC, meshD, meshG, meshF;
 
         initialize();
         animate();
@@ -145,41 +147,64 @@
             // setup scene
             ////////////////////////////////////////////////////////////
 
-            let meshA = new THREE.Mesh(
+            meshA = new THREE.Mesh(
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.5})
             );
             markerLetterA.add( meshA );
 
-            let meshB = new THREE.Mesh(
+            meshB = new THREE.Mesh(
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0xff8800, transparent:true, opacity:0.5})
             );
             markerLetterB.add( meshB );
 
-            let meshC = new THREE.Mesh(
+            meshC = new THREE.Mesh(
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0xffff00, transparent:true, opacity:0.5})
             );
             markerLetterC.add( meshC );
 
-            let meshD = new THREE.Mesh(
+            meshD = new THREE.Mesh(
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0x00cc00, transparent:true, opacity:0.5})
             );
             markerLetterD.add( meshD );
 
-            let meshG = new THREE.Mesh(
+            meshG = new THREE.Mesh(
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0x0000ff, transparent:true, opacity:0.5})
             );
             markerLetterG.add( meshG );
 
-            let meshF = new THREE.Mesh(
+            meshF = new THREE.Mesh(
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0xcc00ff, transparent:true, opacity:0.5})
             );
             markerLetterF.add( meshF );
+
+            //Parte de carregamento do modelinho
+            function onProgress(xhr) { console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
+            function onError(xhr) { console.log( 'An error happened' ); }
+
+            sceneGroupModel = new THREE.Group();
+
+            new THREE.MTLLoader()
+                .setPath( 'models/' )
+                .load( 'female02.mtl', function ( materials ) {
+                    materials.preload();
+                    new THREE.OBJLoader()
+                        .setMaterials( materials )
+                        .setPath( 'models/' )
+                        .load( 'female02.obj', function ( object ) {
+                            object.position.set(0, 0, 0);
+                            object.scale.set(0.01, 0.01, 0.01);
+                            object.traverse(function(child){
+                                child.castShadow = true;
+                            });
+                            sceneGroupModel.add(object);
+                        }, onProgress, onError );
+                } );
         }
 
         function load(){
@@ -197,15 +222,53 @@
 
         function update()
         {
-            if(markerControls1.object3d.visible){
+            if(markerControls1.object3d.visible) {
                 console.log("visivel");
+                markerLetterA.remove( sceneGroupModel );
+                markerLetterC.remove( sceneGroupModel );
+                markerLetterD.remove( sceneGroupModel );
+                markerLetterG.remove( sceneGroupModel );
+                markerLetterF.remove( sceneGroupModel );
+                markerLetterB.remove( sceneGroupModel );
+
+                markerLetterA.add(meshA);
+                markerLetterB.add(meshB);
+                markerLetterC.add(meshC);
+                markerLetterD.add(meshD);
+                markerLetterF.add(meshF);
+                markerLetterG.add(meshG);
+
                 scene.add(markerLetterA);
                 scene.add(markerLetterB);
                 scene.add(markerLetterC);
                 scene.add(markerLetterD);
                 scene.add(markerLetterG);
                 scene.add(markerLetterF);
-            }else{
+            }
+            else if(markerControls2.object3d.visible){
+                console.log("kanjiii");
+                markerLetterA.remove(meshA);
+                markerLetterB.remove(meshB);
+                markerLetterC.remove(meshC);
+                markerLetterD.remove(meshD);
+                markerLetterF.remove(meshF);
+                markerLetterG.remove(meshG);
+
+                markerLetterA.add( sceneGroupModel );
+                markerLetterC.add( sceneGroupModel );
+                markerLetterD.add( sceneGroupModel );
+                markerLetterG.add( sceneGroupModel );
+                markerLetterF.add( sceneGroupModel );
+                markerLetterB.add( sceneGroupModel );
+
+                scene.add(markerLetterA);
+                scene.add(markerLetterB);
+                scene.add(markerLetterC);
+                scene.add(markerLetterD);
+                scene.add(markerLetterG);
+                scene.add(markerLetterF);
+            }
+            else{
                 console.log("fora");
                 scene.remove(markerLetterA);
                 scene.remove(markerLetterB);
