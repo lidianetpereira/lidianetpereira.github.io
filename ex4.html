@@ -39,7 +39,7 @@
     const objs3 = [];
     const objs4 = [];
     const objs5 = [];
-    let gltf;
+    let gltf1, gltf2, gltf3, gltf4, gltf5;
 
     initialize();
     animate();
@@ -214,16 +214,16 @@
         const loader = new THREE.GLTF2Loader();
         loader.load(
             'models/BrainStem.gltf',
-            ( gltf ) => {
+            ( gltf1 ) => {
                 // called when the resource is loaded
 
-                const mixer = new THREE.AnimationMixer(gltf.scene);
+                const mixer = new THREE.AnimationMixer(gltf1.scene);
                 // animations is a list of THREE.AnimationClip
-                for (const anim of gltf.animations) {
+                for (const anim of gltf1.animations) {
                     mixer.clipAction(anim).play();
                 }
-                sceneGroupModel1.add( gltf.scene );
-                objs1.push({gltf, mixer});
+                sceneGroupModel1.add( gltf1.scene );
+                objs1.push({gltf1, mixer});
             },
             ( xhr ) => {
                 // called while loading is progressing
@@ -237,16 +237,16 @@
 
         loader.load(
             'models/CesiumMan.gltf',
-            ( gltf ) => {
+            ( gltf2 ) => {
                 // called when the resource is loaded
 
-                const mixer = new THREE.AnimationMixer(gltf.scene);
+                const mixer = new THREE.AnimationMixer(gltf2.scene);
                 // animations is a list of THREE.AnimationClip
-                for (const anim of gltf.animations) {
+                for (const anim of gltf2.animations) {
                     mixer.clipAction(anim).play();
                 }
-                sceneGroupModel2.add( gltf.scene );
-                objs2.push({gltf, mixer});
+                sceneGroupModel2.add( gltf2.scene );
+                objs2.push({gltf2, mixer});
             },
             ( xhr ) => {
                 // called while loading is progressing
@@ -260,16 +260,16 @@
 
         loader.load(
             'models/CesiumMilkTruck.gltf',
-            ( gltf ) => {
+            ( gltf3 ) => {
                 // called when the resource is loaded
 
-                const mixer = new THREE.AnimationMixer(gltf.scene);
+                const mixer = new THREE.AnimationMixer(gltf3.scene);
                 // animations is a list of THREE.AnimationClip
-                for (const anim of gltf.animations) {
+                for (const anim of gltf3.animations) {
                     mixer.clipAction(anim).play();
                 }
-                sceneGroupModel3.add( gltf.scene );
-                objs3.push({gltf, mixer});
+                sceneGroupModel3.add( gltf3.scene );
+                objs3.push({gltf3, mixer});
             },
             ( xhr ) => {
                 // called while loading is progressing
@@ -283,16 +283,17 @@
 
         loader.load(
             'models/Monster.gltf',
-            ( gltf ) => {
+            ( gltf4 ) => {
                 // called when the resource is loaded
 
-                const mixer = new THREE.AnimationMixer(gltf.scene);
+                const mixer = new THREE.AnimationMixer(gltf4.scene);
                 // animations is a list of THREE.AnimationClip
-                for (const anim of gltf.animations) {
+                for (const anim of gltf4.animations) {
                     mixer.clipAction(anim).play();
                 }
-                sceneGroupModel4.add( gltf.scene );
-                objs4.push({gltf, mixer});
+                gltf4.scene.scale.set(0.1,0.1,0.1);
+                sceneGroupModel4.add( gltf4.scene );
+                objs4.push({gltf4, mixer});
             },
             ( xhr ) => {
                 // called while loading is progressing
@@ -306,16 +307,16 @@
 
         loader.load(
             'models/RiggedFigure.gltf',
-            ( gltf ) => {
+            ( gltf5 ) => {
                 // called when the resource is loaded
 
-                const mixer = new THREE.AnimationMixer(gltf.scene);
+                const mixer = new THREE.AnimationMixer(gltf5.scene);
                 // animations is a list of THREE.AnimationClip
-                for (const anim of gltf.animations) {
+                for (const anim of gltf5.animations) {
                     mixer.clipAction(anim).play();
                 }
-                sceneGroupModel5.add( gltf.scene );
-                objs5.push({gltf, mixer});
+                sceneGroupModel5.add( gltf5.scene );
+                objs5.push({gltf5, mixer});
             },
             ( xhr ) => {
                 // called while loading is progressing
