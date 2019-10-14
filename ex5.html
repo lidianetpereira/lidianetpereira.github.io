@@ -121,8 +121,7 @@
             })
         );
         ballMesh.castShadow = true;
-        ballMesh.position.copy( markerRootA.position.clone());
-        sceneGroup.add( ballMesh );
+        scene.add( ballMesh );
 
         let light = new THREE.PointLight( 0xffffff, 1, 100 );
         light.position.set( 0,4,0 ); // default; light shining from top
@@ -163,33 +162,20 @@
                 sceneGroup.getWorldPosition()
             );
 
-
-            if(ballMesh.position == markerRootA.position){
-                ballMesh.position.x += 0.1;
-            }else if(ballMesh.position == markerRootB.position){
-                ballMesh.position.x -= 0.1;
-            }
+            let p = parabolicPath( markerRootA.getWorldPosition(), markerRootB.getWorldPosition(), (totalTime/1) % 4 - 1 );
+            ballMesh.position.copy( p );
             ballMesh.rotation.z += 0.1
         }
     }
-
-
-
-
-
-
-
-
-
     // create a function p() that passes through the points (0,p0), (1,p1), (2,p2)
     //  and evaluate that function at time t.
     function parabolaEvaluate(p0, p1, p2, t)
     {
-        return ( 0.5*(p0 - 2*p1 + p2) )*t*t + ( -0.5*(3*p0 - 4*p1 + p2) )*t + ( p0 );
+        return ( 0.3*(p0 - 2*p1 + p2) )*t*t + ( -0.3*(3*p0 - 4*p1 + p2) )*t + ( p0 );
     }
     function parabolicPath( pointStart, pointEnd, time )
     {
-        let pointMiddle = new THREE.Vector3().addVectors( pointStart, pointEnd ).multiplyScalar(0.5).add( new THREE.Vector3(0,2,0) );
+        let pointMiddle = new THREE.Vector3().addVectors( pointStart, pointEnd ).multiplyScalar(0.5).add( new THREE.Vector3(0,0,0) );
         return new THREE.Vector3(
             parabolaEvaluate( pointStart.x, pointMiddle.x, pointEnd.x, time ),
             parabolaEvaluate( pointStart.y, pointMiddle.y, pointEnd.y, time ),
