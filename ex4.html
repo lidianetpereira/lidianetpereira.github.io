@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Exercício 4</title>
     <!-- include three.js library -->
-    <script src='js/three.js'></script>
-    <script src='js/GLTFLoader.js'></script>
+    <script src='js/three.min.js'></script>
+    <script src='js/GLTF2Loader.js'></script>
     <!-- include jsartookit -->
     <script src="jsartoolkit5/artoolkit.min.js"></script>
     <script src="jsartoolkit5/artoolkit.api.js"></script>
@@ -21,13 +21,25 @@
 
     var arToolkitSource, arToolkitContext;
 
-    let markerRoot;
+    let markerRoot1, markerRoot2, markerRoot3, markerRoot4, markerRoot5;
+    let markerControls1, markerControls2, markerControls3, markerControls4, markerControls5;
 
-    let markerControls1, markerControls2, markerLetterA, markerLetterB, markerLetterC, markerLetterD, markerLetterF, markerLetterG;
+    let markerLetterA, markerLetterB, markerLetterC, markerLetterD, markerLetterF, markerLetterG;
+    let markerControlsA, markerControlsB, markerControlsC, markerControlsD, markerControlsF, markerControlsG;
 
-    let sceneGroupModel;
+    let sceneGroupModel = new THREE.Group();
+    let sceneGroupModel1 = new THREE.Group();
+    let sceneGroupModel2 = new THREE.Group();
+    let sceneGroupModel3 = new THREE.Group();
+    let sceneGroupModel4 = new THREE.Group();
+    let sceneGroupModel5 = new THREE.Group();
 
-    let meshA, meshB, meshC, meshD, meshG, meshF;
+    const objs1 = [];
+    const objs2 = [];
+    const objs3 = [];
+    const objs4 = [];
+    const objs5 = [];
+    let gltf;
 
     initialize();
     animate();
@@ -103,106 +115,225 @@
         markerRoot1 = new THREE.Group();
         scene.add(markerRoot1);
         markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
-            type: 'pattern', patternUrl: "data/hiro.patt",
-        })
+            type: 'pattern', patternUrl: "data/1.patt",
+        });
 
         markerRoot2 = new THREE.Group();
         scene.add(markerRoot2);
         markerControls2 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot2, {
-            type: 'pattern', patternUrl: "data/kanji.patt",
-        })
+            type: 'pattern', patternUrl: "data/2.patt",
+        });
+
+        markerRoot3 = new THREE.Group();
+        scene.add(markerRoot3);
+        markerControls3 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot3, {
+            type: 'pattern', patternUrl: "data/3.patt",
+        });
+
+        markerRoot4 = new THREE.Group();
+        scene.add(markerRoot4);
+        markerControls4 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot4, {
+            type: 'pattern', patternUrl: "data/4.patt",
+        });
+
+        markerRoot5 = new THREE.Group();
+        scene.add(markerRoot5);
+        markerControls5 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot5, {
+            type: 'pattern', patternUrl: "data/5.patt",
+        });
 
         markerLetterA = new THREE.Group();
-        let markerControlsA = new THREEx.ArMarkerControls(arToolkitContext, markerLetterA, {
+        markerControlsA = new THREEx.ArMarkerControls(arToolkitContext, markerLetterA, {
             type: 'pattern', patternUrl: "data/letterA.patt",
-        })
+        });
 
         markerLetterB = new THREE.Group();
-        let markerControlsB = new THREEx.ArMarkerControls(arToolkitContext, markerLetterB, {
+        markerControlsB = new THREEx.ArMarkerControls(arToolkitContext, markerLetterB, {
             type: 'pattern', patternUrl: "data/letterB.patt",
-        })
+        });
 
         markerLetterC = new THREE.Group();
-        let markerControlsC = new THREEx.ArMarkerControls(arToolkitContext, markerLetterC, {
+        markerControlsC = new THREEx.ArMarkerControls(arToolkitContext, markerLetterC, {
             type: 'pattern', patternUrl: "data/letterC.patt",
-        })
+        });
 
         markerLetterD = new THREE.Group();
-        let markerControlsD = new THREEx.ArMarkerControls(arToolkitContext, markerLetterD, {
+        markerControlsD = new THREEx.ArMarkerControls(arToolkitContext, markerLetterD, {
             type: 'pattern', patternUrl: "data/letterD.patt",
-        })
+        });
 
         markerLetterG = new THREE.Group();
-        let markerControlsG = new THREEx.ArMarkerControls(arToolkitContext, markerLetterG, {
+        markerControlsG = new THREEx.ArMarkerControls(arToolkitContext, markerLetterG, {
             type: 'pattern', patternUrl: "data/letterG.patt",
-        })
+        });
 
         markerLetterF = new THREE.Group();
-        let markerControlsF = new THREEx.ArMarkerControls(arToolkitContext, markerLetterF, {
+        markerControlsF = new THREEx.ArMarkerControls(arToolkitContext, markerLetterF, {
             type: 'pattern', patternUrl: "data/letterF.patt",
-        })
+        });
 
         ////////////////////////////////////////////////////////////
         // setup scene
         ////////////////////////////////////////////////////////////
 
-        meshA = new THREE.Mesh(
-            new THREE.CubeGeometry(1.25,1.25,1.25),
-            new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.5})
+        // sceneGroupModel1 = new THREE.Mesh(
+        //     new THREE.CubeGeometry(1.25,1.25,1.25),
+        //     new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.5})
+        // );
+        // markerLetterA.add( sceneGroupModel1 );
+        //
+        // sceneGroupModel2 = new THREE.Mesh(
+        //     new THREE.CubeGeometry(1.25,1.25,1.25),
+        //     new THREE.MeshBasicMaterial({color:0xff8800, transparent:true, opacity:0.5})
+        // );
+        // markerLetterB.add( sceneGroupModel2 );
+        //
+        // sceneGroupModel3 = new THREE.Mesh(
+        //     new THREE.CubeGeometry(1.25,1.25,1.25),
+        //     new THREE.MeshBasicMaterial({color:0xffff00, transparent:true, opacity:0.5})
+        // );
+        // markerLetterC.add( sceneGroupModel3 );
+        //
+        // sceneGroupModel4 = new THREE.Mesh(
+        //     new THREE.CubeGeometry(1.25,1.25,1.25),
+        //     new THREE.MeshBasicMaterial({color:0x00cc00, transparent:true, opacity:0.5})
+        // );
+        // markerLetterD.add( sceneGroupModel4 );
+        //
+        // sceneGroupModel5 = new THREE.Mesh(
+        //     new THREE.CubeGeometry(1.25,1.25,1.25),
+        //     new THREE.MeshBasicMaterial({color:0x0000ff, transparent:true, opacity:0.5})
+        // );
+        // markerLetterG.add( sceneGroupModel5 );
+
+        let light = new THREE.PointLight( 0xffffff, 1, 100 );
+        light.position.set( 0,4,0 ); // default; light shining from top
+        light.castShadow = true;
+        camera.add( light );
+
+        const loader = new THREE.GLTF2Loader();
+        loader.load(
+            'models/BrainStem.gltf',
+            ( gltf ) => {
+                // called when the resource is loaded
+
+                const mixer = new THREE.AnimationMixer(gltf.scene);
+                // animations is a list of THREE.AnimationClip
+                for (const anim of gltf.animations) {
+                    mixer.clipAction(anim).play();
+                }
+                sceneGroupModel1.add( gltf.scene );
+                objs1.push({gltf, mixer});
+            },
+            ( xhr ) => {
+                // called while loading is progressing
+                console.log( `${( xhr.loaded / xhr.total * 100 )}% loaded` );
+            },
+            ( error ) => {
+                // called when loading has errors
+                console.error( 'An error happened', error );
+            },
         );
-        markerLetterA.add( meshA );
 
-        meshB = new THREE.Mesh(
-            new THREE.CubeGeometry(1.25,1.25,1.25),
-            new THREE.MeshBasicMaterial({color:0xff8800, transparent:true, opacity:0.5})
+        loader.load(
+            'models/CesiumMan.gltf',
+            ( gltf ) => {
+                // called when the resource is loaded
+
+                const mixer = new THREE.AnimationMixer(gltf.scene);
+                // animations is a list of THREE.AnimationClip
+                for (const anim of gltf.animations) {
+                    mixer.clipAction(anim).play();
+                }
+                sceneGroupModel2.add( gltf.scene );
+                objs2.push({gltf, mixer});
+            },
+            ( xhr ) => {
+                // called while loading is progressing
+                console.log( `${( xhr.loaded / xhr.total * 100 )}% loaded` );
+            },
+            ( error ) => {
+                // called when loading has errors
+                console.error( 'An error happened', error );
+            },
         );
-        markerLetterB.add( meshB );
 
-        meshC = new THREE.Mesh(
-            new THREE.CubeGeometry(1.25,1.25,1.25),
-            new THREE.MeshBasicMaterial({color:0xffff00, transparent:true, opacity:0.5})
+        loader.load(
+            'models/CesiumMilkTruck.gltf',
+            ( gltf ) => {
+                // called when the resource is loaded
+
+                const mixer = new THREE.AnimationMixer(gltf.scene);
+                // animations is a list of THREE.AnimationClip
+                for (const anim of gltf.animations) {
+                    mixer.clipAction(anim).play();
+                }
+                sceneGroupModel3.add( gltf.scene );
+                objs3.push({gltf, mixer});
+            },
+            ( xhr ) => {
+                // called while loading is progressing
+                console.log( `${( xhr.loaded / xhr.total * 100 )}% loaded` );
+            },
+            ( error ) => {
+                // called when loading has errors
+                console.error( 'An error happened', error );
+            },
         );
-        markerLetterC.add( meshC );
 
-        meshD = new THREE.Mesh(
-            new THREE.CubeGeometry(1.25,1.25,1.25),
-            new THREE.MeshBasicMaterial({color:0x00cc00, transparent:true, opacity:0.5})
+        loader.load(
+            'models/Monster.gltf',
+            ( gltf ) => {
+                // called when the resource is loaded
+
+                const mixer = new THREE.AnimationMixer(gltf.scene);
+                // animations is a list of THREE.AnimationClip
+                for (const anim of gltf.animations) {
+                    mixer.clipAction(anim).play();
+                }
+                sceneGroupModel4.add( gltf.scene );
+                objs4.push({gltf, mixer});
+            },
+            ( xhr ) => {
+                // called while loading is progressing
+                console.log( `${( xhr.loaded / xhr.total * 100 )}% loaded` );
+            },
+            ( error ) => {
+                // called when loading has errors
+                console.error( 'An error happened', error );
+            },
         );
-        markerLetterD.add( meshD );
 
-        meshG = new THREE.Mesh(
-            new THREE.CubeGeometry(1.25,1.25,1.25),
-            new THREE.MeshBasicMaterial({color:0x0000ff, transparent:true, opacity:0.5})
+        loader.load(
+            'models/RiggedFigure.gltf',
+            ( gltf ) => {
+                // called when the resource is loaded
+
+                const mixer = new THREE.AnimationMixer(gltf.scene);
+                // animations is a list of THREE.AnimationClip
+                for (const anim of gltf.animations) {
+                    mixer.clipAction(anim).play();
+                }
+                sceneGroupModel5.add( gltf.scene );
+                objs5.push({gltf, mixer});
+            },
+            ( xhr ) => {
+                // called while loading is progressing
+                console.log( `${( xhr.loaded / xhr.total * 100 )}% loaded` );
+            },
+            ( error ) => {
+                // called when loading has errors
+                console.error( 'An error happened', error );
+            },
         );
-        markerLetterG.add( meshG );
-
-        meshF = new THREE.Mesh(
-            new THREE.CubeGeometry(1.25,1.25,1.25),
-            new THREE.MeshBasicMaterial({color:0xcc00ff, transparent:true, opacity:0.5})
-        );
-        markerLetterF.add( meshF );
-
-        //Parte de carregamento do modelinho
-        function onProgress(xhr) { console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
-        function onError(xhr) { console.log( 'An error happened' ); }
-
-        sceneGroupModel = new THREE.Group();
-
-        var loader = new GLTFLoader().setPath( 'models/' );
-        loader.load( 'BrainStem.gltf', function ( gltf ) {
-            gltf.scene.traverse( function ( child ) {
-
-            } );
-            sceneGroupModel.add( gltf.scene );
-        } );
     }
-
-    function load(){
-
-    }
-
     function animate()
     {
+        objs1.forEach(({mixer}) => {mixer.update(clock.getDelta());});
+        objs2.forEach(({mixer}) => {mixer.update(clock.getDelta());});
+        objs3.forEach(({mixer}) => {mixer.update(clock.getDelta());});
+        objs4.forEach(({mixer}) => {mixer.update(clock.getDelta());});
+        objs5.forEach(({mixer}) => {mixer.update(clock.getDelta());});
         requestAnimationFrame(animate);
         deltaTime = clock.getDelta();
         totalTime += deltaTime;
@@ -212,54 +343,213 @@
 
     function update()
     {
-        if(markerControls1.object3d.visible) {
-            console.log("visivel");
-            markerLetterA.remove( sceneGroupModel );
-            markerLetterC.remove( sceneGroupModel );
-            markerLetterD.remove( sceneGroupModel );
-            markerLetterG.remove( sceneGroupModel );
-            markerLetterF.remove( sceneGroupModel );
-            markerLetterB.remove( sceneGroupModel );
+        if(markerControls1.object3d.visible){
+            //console.log("kanjiii");
+            markerLetterA.remove(sceneGroupModel);
+            markerLetterB.remove(sceneGroupModel);
+            markerLetterC.remove(sceneGroupModel);
+            markerLetterD.remove(sceneGroupModel);
+            markerLetterF.remove(sceneGroupModel);
+            markerLetterG.remove(sceneGroupModel);
 
-            markerLetterA.add(meshA);
-            markerLetterB.add(meshB);
-            markerLetterC.add(meshC);
-            markerLetterD.add(meshD);
-            markerLetterF.add(meshF);
-            markerLetterG.add(meshG);
+            sceneGroupModel = sceneGroupModel1;
 
-            scene.add(markerLetterA);
-            scene.add(markerLetterB);
-            scene.add(markerLetterC);
-            scene.add(markerLetterD);
-            scene.add(markerLetterG);
-            scene.add(markerLetterF);
+            if(markerControlsA.object3d.visible){
+                markerLetterA.add( sceneGroupModel );
+                scene.add(markerLetterA);
+            }
+
+            else if(markerControlsB.object3d.visible){
+                markerLetterB.add( sceneGroupModel );
+                scene.add(markerLetterB);
+            }
+
+            else if(markerControlsC.object3d.visible){
+                markerLetterC.add( sceneGroupModel );
+                scene.add(markerLetterC);
+            }
+
+            else if(markerControlsD.object3d.visible){
+                markerLetterD.add( sceneGroupModel );
+                scene.add(markerLetterD);
+            }
+
+            else if(markerControlsF.object3d.visible){
+                markerLetterF.add( sceneGroupModel );
+                scene.add(markerLetterF);
+            }
+
+            else if(markerControlsG.object3d.visible){
+                markerLetterG.add( sceneGroupModel );
+                scene.add(markerLetterG);
+            }
         }
         else if(markerControls2.object3d.visible){
-            console.log("kanjiii");
-            markerLetterA.remove(meshA);
-            markerLetterB.remove(meshB);
-            markerLetterC.remove(meshC);
-            markerLetterD.remove(meshD);
-            markerLetterF.remove(meshF);
-            markerLetterG.remove(meshG);
+            //console.log("kanjiii");
+            markerLetterA.remove(sceneGroupModel);
+            markerLetterB.remove(sceneGroupModel);
+            markerLetterC.remove(sceneGroupModel);
+            markerLetterD.remove(sceneGroupModel);
+            markerLetterF.remove(sceneGroupModel);
+            markerLetterG.remove(sceneGroupModel);
 
-            markerLetterA.add( sceneGroupModel );
-            markerLetterC.add( sceneGroupModel );
-            markerLetterD.add( sceneGroupModel );
-            markerLetterG.add( sceneGroupModel );
-            markerLetterF.add( sceneGroupModel );
-            markerLetterB.add( sceneGroupModel );
+            sceneGroupModel = sceneGroupModel2;
 
-            scene.add(markerLetterA);
-            scene.add(markerLetterB);
-            scene.add(markerLetterC);
-            scene.add(markerLetterD);
-            scene.add(markerLetterG);
-            scene.add(markerLetterF);
+            if(markerControlsA.object3d.visible){
+                markerLetterA.add( sceneGroupModel );
+                scene.add(markerLetterA);
+            }
+
+            else if(markerControlsB.object3d.visible){
+                markerLetterB.add( sceneGroupModel );
+                scene.add(markerLetterB);
+            }
+
+            else if(markerControlsC.object3d.visible){
+                markerLetterC.add( sceneGroupModel );
+                scene.add(markerLetterC);
+            }
+
+            else if(markerControlsD.object3d.visible){
+                markerLetterD.add( sceneGroupModel );
+                scene.add(markerLetterD);
+            }
+
+            else if(markerControlsF.object3d.visible){
+                markerLetterF.add( sceneGroupModel );
+                scene.add(markerLetterF);
+            }
+
+            else if(markerControlsG.object3d.visible){
+                markerLetterG.add( sceneGroupModel );
+                scene.add(markerLetterG);
+            }
+        }
+        else if(markerControls3.object3d.visible){
+            //console.log("kanjiii");
+            markerLetterA.remove(sceneGroupModel);
+            markerLetterB.remove(sceneGroupModel);
+            markerLetterC.remove(sceneGroupModel);
+            markerLetterD.remove(sceneGroupModel);
+            markerLetterF.remove(sceneGroupModel);
+            markerLetterG.remove(sceneGroupModel);
+
+            sceneGroupModel = sceneGroupModel3;
+
+            if(markerControlsA.object3d.visible){
+                markerLetterA.add( sceneGroupModel );
+                scene.add(markerLetterA);
+            }
+
+            else if(markerControlsB.object3d.visible){
+                markerLetterB.add( sceneGroupModel );
+                scene.add(markerLetterB);
+            }
+
+            else if(markerControlsC.object3d.visible){
+                markerLetterC.add( sceneGroupModel );
+                scene.add(markerLetterC);
+            }
+
+            else if(markerControlsD.object3d.visible){
+                markerLetterD.add( sceneGroupModel );
+                scene.add(markerLetterD);
+            }
+
+            else if(markerControlsF.object3d.visible){
+                markerLetterF.add( sceneGroupModel );
+                scene.add(markerLetterF);
+            }
+
+            else if(markerControlsG.object3d.visible){
+                markerLetterG.add( sceneGroupModel );
+                scene.add(markerLetterG);
+            }
+        }
+        else if(markerControls4.object3d.visible){
+            //console.log("kanjiii");
+            markerLetterA.remove(sceneGroupModel);
+            markerLetterB.remove(sceneGroupModel);
+            markerLetterC.remove(sceneGroupModel);
+            markerLetterD.remove(sceneGroupModel);
+            markerLetterF.remove(sceneGroupModel);
+            markerLetterG.remove(sceneGroupModel);
+
+            sceneGroupModel = sceneGroupModel4;
+
+            if(markerControlsA.object3d.visible){
+                markerLetterA.add( sceneGroupModel );
+                scene.add(markerLetterA);
+            }
+
+            else if(markerControlsB.object3d.visible){
+                markerLetterB.add( sceneGroupModel );
+                scene.add(markerLetterB);
+            }
+
+            else if(markerControlsC.object3d.visible){
+                markerLetterC.add( sceneGroupModel );
+                scene.add(markerLetterC);
+            }
+
+            else if(markerControlsD.object3d.visible){
+                markerLetterD.add( sceneGroupModel );
+                scene.add(markerLetterD);
+            }
+
+            else if(markerControlsF.object3d.visible){
+                markerLetterF.add( sceneGroupModel );
+                scene.add(markerLetterF);
+            }
+
+            else if(markerControlsG.object3d.visible){
+                markerLetterG.add( sceneGroupModel );
+                scene.add(markerLetterG);
+            }
+        }
+        else if(markerControls5.object3d.visible){
+            //console.log("kanjiii");
+            markerLetterA.remove(sceneGroupModel);
+            markerLetterB.remove(sceneGroupModel);
+            markerLetterC.remove(sceneGroupModel);
+            markerLetterD.remove(sceneGroupModel);
+            markerLetterF.remove(sceneGroupModel);
+            markerLetterG.remove(sceneGroupModel);
+
+            sceneGroupModel = sceneGroupModel5;
+
+            if(markerControlsA.object3d.visible){
+                markerLetterA.add( sceneGroupModel );
+                scene.add(markerLetterA);
+            }
+
+            else if(markerControlsB.object3d.visible){
+                markerLetterB.add( sceneGroupModel );
+                scene.add(markerLetterB);
+            }
+
+            else if(markerControlsC.object3d.visible){
+                markerLetterC.add( sceneGroupModel );
+                scene.add(markerLetterC);
+            }
+
+            else if(markerControlsD.object3d.visible){
+                markerLetterD.add( sceneGroupModel );
+                scene.add(markerLetterD);
+            }
+
+            else if(markerControlsF.object3d.visible){
+                markerLetterF.add( sceneGroupModel );
+                scene.add(markerLetterF);
+            }
+
+            else if(markerControlsG.object3d.visible){
+                markerLetterG.add( sceneGroupModel );
+                scene.add(markerLetterG);
+            }
         }
         else{
-            console.log("fora");
+            //console.log("fora");
             scene.remove(markerLetterA);
             scene.remove(markerLetterB);
             scene.remove(markerLetterC);
