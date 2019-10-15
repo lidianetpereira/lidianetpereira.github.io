@@ -34,12 +34,8 @@
     let sceneGroupModel4 = new THREE.Group();
     let sceneGroupModel5 = new THREE.Group();
 
-    const objs1 = [];
-    const objs2 = [];
-    const objs3 = [];
-    const objs4 = [];
-    const objs5 = [];
-    let gltf1, gltf2, gltf3, gltf4, gltf5;
+    const mixers = [];
+    let gltf;
 
     initialize();
     animate();
@@ -56,9 +52,9 @@
         });
         renderer.setClearColor(new THREE.Color('lightgrey'), 0)
         renderer.setSize( 640, 480 );
-        renderer.domElement.style.position = 'absolute'
-        renderer.domElement.style.top = '0px'
-        renderer.domElement.style.left = '0px'
+        renderer.domElement.style.position = 'absolute';
+        renderer.domElement.style.top = '0px';
+        renderer.domElement.style.left = '0px';
         document.body.appendChild( renderer.domElement );
 
         clock = new THREE.Clock();
@@ -75,11 +71,11 @@
 
         function onResize()
         {
-            arToolkitSource.onResizeElement()
-            arToolkitSource.copyElementSizeTo(renderer.domElement)
+            arToolkitSource.onResizeElement();
+            arToolkitSource.copyElementSizeTo(renderer.domElement);
             if ( arToolkitContext.arController !== null )
             {
-                arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
+                arToolkitSource.copySizeTo(arToolkitContext.arController.canvas);
             }
         }
 
@@ -214,16 +210,16 @@
         const loader = new THREE.GLTF2Loader();
         loader.load(
             'models/BrainStem.gltf',
-            ( gltf1 ) => {
+            ( gltf ) => {
                 // called when the resource is loaded
 
-                const mixer = new THREE.AnimationMixer(gltf1.scene);
+                const mixer = new THREE.AnimationMixer(gltf.scene);
                 // animations is a list of THREE.AnimationClip
-                for (const anim of gltf1.animations) {
+                for (const anim of gltf.animations) {
                     mixer.clipAction(anim).play();
                 }
-                sceneGroupModel1.add( gltf1.scene );
-                objs1.push({gltf1, mixer});
+                sceneGroupModel1.add( gltf.scene );
+                mixers.push(mixer);
             },
             ( xhr ) => {
                 // called while loading is progressing
@@ -237,16 +233,16 @@
 
         loader.load(
             'models/CesiumMan.gltf',
-            ( gltf2 ) => {
+            ( gltf ) => {
                 // called when the resource is loaded
 
-                const mixer = new THREE.AnimationMixer(gltf2.scene);
+                const mixer = new THREE.AnimationMixer(gltf.scene);
                 // animations is a list of THREE.AnimationClip
-                for (const anim of gltf2.animations) {
+                for (const anim of gltf.animations) {
                     mixer.clipAction(anim).play();
                 }
-                sceneGroupModel2.add( gltf2.scene );
-                objs2.push({gltf2, mixer});
+                sceneGroupModel2.add( gltf.scene );
+                mixers.push(mixer);
             },
             ( xhr ) => {
                 // called while loading is progressing
@@ -260,16 +256,16 @@
 
         loader.load(
             'models/CesiumMilkTruck.gltf',
-            ( gltf3 ) => {
+            ( gltf ) => {
                 // called when the resource is loaded
 
-                const mixer = new THREE.AnimationMixer(gltf3.scene);
+                const mixer = new THREE.AnimationMixer(gltf.scene);
                 // animations is a list of THREE.AnimationClip
-                for (const anim of gltf3.animations) {
+                for (const anim of gltf.animations) {
                     mixer.clipAction(anim).play();
                 }
-                sceneGroupModel3.add( gltf3.scene );
-                objs3.push({gltf3, mixer});
+                sceneGroupModel3.add( gltf.scene );
+                mixers.push(mixer);
             },
             ( xhr ) => {
                 // called while loading is progressing
@@ -283,17 +279,17 @@
 
         loader.load(
             'models/Monster.gltf',
-            ( gltf4 ) => {
+            ( gltf ) => {
                 // called when the resource is loaded
 
-                const mixer = new THREE.AnimationMixer(gltf4.scene);
+                const mixer = new THREE.AnimationMixer(gltf.scene);
                 // animations is a list of THREE.AnimationClip
-                for (const anim of gltf4.animations) {
+                for (const anim of gltf.animations) {
                     mixer.clipAction(anim).play();
                 }
-                gltf4.scene.scale.set(0.1,0.1,0.1);
-                sceneGroupModel4.add( gltf4.scene );
-                objs4.push({gltf4, mixer});
+                gltf.scene.scale.set(0.1,0.1,0.1);
+                sceneGroupModel4.add( gltf.scene );
+                mixers.push(mixer);
             },
             ( xhr ) => {
                 // called while loading is progressing
@@ -307,16 +303,16 @@
 
         loader.load(
             'models/RiggedFigure.gltf',
-            ( gltf5 ) => {
+            ( gltf ) => {
                 // called when the resource is loaded
 
-                const mixer = new THREE.AnimationMixer(gltf5.scene);
+                const mixer = new THREE.AnimationMixer(gltf.scene);
                 // animations is a list of THREE.AnimationClip
-                for (const anim of gltf5.animations) {
+                for (const anim of gltf.animations) {
                     mixer.clipAction(anim).play();
                 }
-                sceneGroupModel5.add( gltf5.scene );
-                objs5.push({gltf5, mixer});
+                sceneGroupModel5.add( gltf.scene );
+                mixers.push(mixer);
             },
             ( xhr ) => {
                 // called while loading is progressing
@@ -330,14 +326,12 @@
     }
     function animate()
     {
-        objs1.forEach(({mixer}) => {mixer.update(clock.getDelta());});
-        objs2.forEach(({mixer}) => {mixer.update(clock.getDelta());});
-        objs3.forEach(({mixer}) => {mixer.update(clock.getDelta());});
-        objs4.forEach(({mixer}) => {mixer.update(clock.getDelta());});
-        objs5.forEach(({mixer}) => {mixer.update(clock.getDelta());});
+        var mixerUpdateDelta = clock.getDelta();
+        // Update all the animation frames
+        for ( var i = 0; i < mixers.length; ++ i ) {
+            mixers[ i ].update( mixerUpdateDelta );
+        }
         requestAnimationFrame(animate);
-        deltaTime = clock.getDelta();
-        totalTime += deltaTime;
         update();
         render();
     }
