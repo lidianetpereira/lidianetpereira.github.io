@@ -44,11 +44,11 @@
                 antialias : true,
                 alpha: true
             });
-            renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+            renderer.setClearColor(new THREE.Color('lightgrey'), 0);
             renderer.setSize( 640, 480 );
-            renderer.domElement.style.position = 'absolute'
-            renderer.domElement.style.top = '0px'
-            renderer.domElement.style.left = '0px'
+            renderer.domElement.style.position = 'absolute';
+            renderer.domElement.style.top = '0px';
+            renderer.domElement.style.left = '0px';
             document.body.appendChild( renderer.domElement );
 
             clock = new THREE.Clock();
@@ -65,8 +65,8 @@
 
             function onResize()
             {
-                arToolkitSource.onResizeElement()
-                arToolkitSource.copyElementSizeTo(renderer.domElement)
+                arToolkitSource.onResizeElement();
+                arToolkitSource.copyElementSizeTo(renderer.domElement);
                 if ( arToolkitContext.arController !== null )
                 {
                     arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
@@ -127,7 +127,7 @@
             markerLetterC = new THREE.Group();
             markerControlsC = new THREEx.ArMarkerControls(arToolkitContext, markerLetterC, {
                 type: 'pattern', patternUrl: "data/letterC.patt",
-            })
+            });
 
             markerLetterD = new THREE.Group();
             markerControlsD = new THREEx.ArMarkerControls(arToolkitContext, markerLetterD, {
@@ -152,36 +152,42 @@
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.5})
             );
+            meshA.position.set(0,.75,0);
             markerLetterA.add( meshA );
 
             meshB = new THREE.Mesh(
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0xff8800, transparent:true, opacity:0.5})
             );
+            meshB.position.set(0,.75,0);
             markerLetterB.add( meshB );
 
             meshC = new THREE.Mesh(
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0xffff00, transparent:true, opacity:0.5})
             );
+            meshC.position.set(0,.75,0);
             markerLetterC.add( meshC );
 
             meshD = new THREE.Mesh(
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0x00cc00, transparent:true, opacity:0.5})
             );
+            meshD.position.set(0,.75,0);
             markerLetterD.add( meshD );
 
             meshG = new THREE.Mesh(
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0x0000ff, transparent:true, opacity:0.5})
             );
+            meshG.position.set(0,.75,0);
             markerLetterG.add( meshG );
 
             meshF = new THREE.Mesh(
                 new THREE.CubeGeometry(1.25,1.25,1.25),
                 new THREE.MeshBasicMaterial({color:0xcc00ff, transparent:true, opacity:0.5})
             );
+            meshF.position.set(0,.75,0);
             markerLetterF.add( meshF );
 
             //Parte de carregamento do modelinho
@@ -262,49 +268,40 @@
                 markerLetterG.remove(meshG);
 
                 if(markerControlsA.object3d.visible){
+                    sceneGroupModel.position.set(2.5,0.5,1);
                     markerLetterA.add( sceneGroupModel );
                     scene.add(markerLetterA);
                 }
 
                 else if(markerControlsB.object3d.visible){
+                    sceneGroupModel.position.set(0,0.5,1);
                     markerLetterB.add( sceneGroupModel );
                     scene.add(markerLetterB);
                 }
 
                 else if(markerControlsC.object3d.visible){
+                    sceneGroupModel.position.set(-2.5,0.5,1);
                     markerLetterC.add( sceneGroupModel );
                     scene.add(markerLetterC);
                 }
 
                 else if(markerControlsD.object3d.visible){
+                    sceneGroupModel.position.set(2.5,0.5,-1);
                     markerLetterD.add( sceneGroupModel );
                     scene.add(markerLetterD);
                 }
 
                 else if(markerControlsF.object3d.visible){
+                    sceneGroupModel.position.set(-2.5,0.5,-1);
                     markerLetterF.add( sceneGroupModel );
                     scene.add(markerLetterF);
                 }
 
                 else if(markerControlsG.object3d.visible){
+                    sceneGroupModel.position.set(0,0.5,-1);
                     markerLetterG.add( sceneGroupModel );
                     scene.add(markerLetterG);
                 }
-
-
-                // markerLetterA.add( sceneGroupModel );
-                // markerLetterC.add( sceneGroupModel );
-                // markerLetterD.add( sceneGroupModel );
-                // markerLetterG.add( sceneGroupModel );
-                // markerLetterF.add( sceneGroupModel );
-                // markerLetterB.add( sceneGroupModel );
-                //
-                //
-                // scene.add(markerLetterB);
-                // scene.add(markerLetterC);
-                // scene.add(markerLetterD);
-                // scene.add(markerLetterG);
-                // scene.add(markerLetterF);
             }
             else{
                 //console.log("fora");
