@@ -15,10 +15,11 @@
 </head>
 <body>
 <script>
-    var scene, camera, renderer, clock, deltaTime, totalTime;
+    var scene, camera, renderer, clock, deltaTime, totalTime, sceneGroup;
     var arToolkitSource, arToolkitContext;
-    var markerRoot1;
-    var material1, mesh1;
+    var markerRootA, markerRootB;
+    var ballMesh, mesh1;
+
 
     var A = new THREE.Vector3();
     var B = new THREE.Vector3();
@@ -113,7 +114,7 @@
         let loader = new THREE.TextureLoader();
 
         sceneGroup = new THREE.Group();
-        markerRootA.add(sceneGroup);
+        //markerRootA.add(sceneGroup);
 
         let floorGeometry = new THREE.PlaneGeometry( 20,20 );
         let floorMaterial = new THREE.ShadowMaterial();
@@ -153,12 +154,13 @@
         sceneGroup.add( ambientLight );
         // let helper = new THREE.CameraHelper( light.shadow.camera );
         // sceneGroup.add( helper );
+        //
+        // // default normal of a plane is 0,0,1. Apply mesh rotation to it.
+        // let clipPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(
+        //     new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0) );
+        // renderer.clippingPlanes = [clipPlane];
 
-        // default normal of a plane is 0,0,1. Apply mesh rotation to it.
-        let clipPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(
-            new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0) );
-        renderer.clippingPlanes = [clipPlane];
-
+        scene.add(sceneGroup);
     }
     function update()
     {
@@ -167,29 +169,56 @@
             arToolkitContext.update( arToolkitSource.domElement );
         if ( markerRootA.visible && markerRootB.visible )
         {
-            // align clipping plane to scene.
-            renderer.clippingPlanes[0].setFromNormalAndCoplanarPoint(
-                new THREE.Vector3(0,0,0).applyQuaternion(sceneGroup.getWorldQuaternion()),
-                sceneGroup.getWorldPosition()
-            );
-
             ballMesh.rotation.z += 0.1;
             markerRootA.getWorldPosition(A);
             markerRootB.getWorldPosition(B);
 
-            if(it==0){
-                ballMesh.position.copy(A);
-                dir = B.sub(ballMesh.position);
-                it = 1;
-            }
+            ballMesh.position.copy(A);
+            dir = B.sub(ballMesh.position);
 
-            
+            let time = (totalTime/1) % 3 - 1;
+
+            //ballMesh.position.copy( A + (dir*time) );
 
             console.log('A: '+ A.x + ' ' + A.y + ' ' + A.z);
             console.log('Ball: '+ ballMesh.position.x + ' ' + ballMesh.position.y + ' ' + ballMesh.position.z);
             console.log('B: '+ B.x + ' ' + B.y + ' ' + B.z);
             console.log('dir: '+ dir.x + ' ' + dir.y + ' ' + dir.z);
         }
+        else if (markerRootA.visible == false && markerRootB.visible == true){
+
+            markerRootB.getWorldPosition(B);
+            ballMesh.position.copy(B);
+            ballMesh.rotation.z += 0.1;
+
+            sceneGroup.position.copy(B);
+            console.log('mkA: '+ markerRootA.visible);
+            //console.log('mkB: '+ markerRootB.visible);
+            //
+            // markerRootA.getWorldPosition(A);
+            // markerRootB.getWorldPosition(B);
+            //
+            // console.log('A: '+ A.x + ' ' + A.y + ' ' + A.z);
+            // console.log('B: '+ B.x + ' ' + B.y + ' ' + B.z);
+        }
+        else if (markerRootA.visible == true && markerRootB.visible == false){
+
+            markerRootA.getWorldPosition(A);
+            ballMesh.position.copy(A);
+            ballMesh.rotation.z += 0.1;
+
+            //console.log('mkA: '+ markerRootA.visible);
+            console.log('mkB: '+ markerRootB.visible);
+            //
+            // markerRootA.getWorldPosition(A);
+            // markerRootB.getWorldPosition(B);
+            //
+            // console.log('A: '+ A.x + ' ' + A.y + ' ' + A.z);
+            // console.log('B: '+ B.x + ' ' + B.y + ' ' + B.z);
+        }else{
+            ballMesh.position.set(0, 0, 0);
+        }
+
     }
 
     function render()
