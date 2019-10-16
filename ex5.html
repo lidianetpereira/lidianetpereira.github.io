@@ -24,7 +24,9 @@
     var A = new THREE.Vector3();
     var B = new THREE.Vector3();
     var dir = new THREE.Vector3();
+    var s = new THREE.Vector3();
     const scenepos = new THREE.Vector3();
+    var bkp = new THREE.Vector3();
 
 
     var it = 0;
@@ -174,16 +176,13 @@
             markerRootB.getWorldPosition(B);
 
             ballMesh.position.copy(A);
-            dir = B.sub(ballMesh.position);
 
-            let time = (totalTime/1) % 3 - 1;
-
-            //ballMesh.position.copy( A + (dir*time) );
+            moveBall(A, B, ballMesh.position);
 
             console.log('A: '+ A.x + ' ' + A.y + ' ' + A.z);
             console.log('Ball: '+ ballMesh.position.x + ' ' + ballMesh.position.y + ' ' + ballMesh.position.z);
             console.log('B: '+ B.x + ' ' + B.y + ' ' + B.z);
-            console.log('dir: '+ dir.x + ' ' + dir.y + ' ' + dir.z);
+            //console.log('dir: '+ dir.x + ' ' + dir.y + ' ' + dir.z);
         }
         else if (markerRootA.visible == false && markerRootB.visible == true){
 
@@ -191,15 +190,7 @@
             ballMesh.position.copy(B);
             ballMesh.rotation.z += 0.1;
 
-            sceneGroup.position.copy(B);
             console.log('mkA: '+ markerRootA.visible);
-            //console.log('mkB: '+ markerRootB.visible);
-            //
-            // markerRootA.getWorldPosition(A);
-            // markerRootB.getWorldPosition(B);
-            //
-            // console.log('A: '+ A.x + ' ' + A.y + ' ' + A.z);
-            // console.log('B: '+ B.x + ' ' + B.y + ' ' + B.z);
         }
         else if (markerRootA.visible == true && markerRootB.visible == false){
 
@@ -207,18 +198,38 @@
             ballMesh.position.copy(A);
             ballMesh.rotation.z += 0.1;
 
-            //console.log('mkA: '+ markerRootA.visible);
             console.log('mkB: '+ markerRootB.visible);
-            //
-            // markerRootA.getWorldPosition(A);
-            // markerRootB.getWorldPosition(B);
-            //
-            // console.log('A: '+ A.x + ' ' + A.y + ' ' + A.z);
-            // console.log('B: '+ B.x + ' ' + B.y + ' ' + B.z);
         }else{
             ballMesh.position.set(0, 0, 0);
         }
 
+    }
+
+    function moveBall(A, B) {
+        var begin = new THREE.Vector3();
+        var end = new THREE.Vector3();
+
+        if(ballMesh.position.equals(A)){
+            begin = A;
+            end = B;
+
+            if(!ballMesh.position.equals(end)){
+                dir = end.sub(ballMesh.position);
+
+                ballMesh.position.add(dir.multiplyScalar((totalTime/1) % 1));
+
+                console.log('s: '+ s.x + ' ' + s.y + ' ' + s.z);
+            }
+
+            console.log('begin A: '+ begin.x + ' ' + begin.y + ' ' + begin.z);
+            console.log('end B: '+ end.x + ' ' + end.y + ' ' + end.z);
+        }
+        else if(ballMesh.position.equals(B)){
+            begin = B;
+            end = A;
+            console.log('begin B: '+ begin.x + ' ' + begin.y + ' ' + begin.z);
+            console.log('end A: '+ end.x + ' ' + end.y + ' ' + end.z);
+        }
     }
 
     function render()
