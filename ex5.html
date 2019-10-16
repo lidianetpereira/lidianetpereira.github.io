@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Exercício 5</title>
-    <script src='js/three.js'></script>
+    <script src='js/three.min.js'></script>
     <!-- include jsartookit -->
     <script src="jsartoolkit5/artoolkit.min.js"></script>
     <script src="jsartoolkit5/artoolkit.api.js"></script>
@@ -19,6 +19,14 @@
     var arToolkitSource, arToolkitContext;
     var markerRoot1;
     var material1, mesh1;
+
+    const A = new THREE.Vector3();
+    const B = new THREE.Vector3();
+    const scenepos = new THREE.Vector3();
+
+
+
+    let markerControls1, markerControls2;
     initialize();
     animate();
     function initialize()
@@ -158,31 +166,29 @@
         {
             // align clipping plane to scene.
             renderer.clippingPlanes[0].setFromNormalAndCoplanarPoint(
-                new THREE.Vector3(0,1,0).applyQuaternion(sceneGroup.getWorldQuaternion()),
+                new THREE.Vector3(0,0,0).applyQuaternion(sceneGroup.getWorldQuaternion()),
                 sceneGroup.getWorldPosition()
             );
 
-            let p = parabolicPath( markerRootA.getWorldPosition(), markerRootB.getWorldPosition(), (totalTime/1) % 4 - 1 );
-            ballMesh.position.copy( p );
-            ballMesh.rotation.z += 0.1
+            markerRootA.getWorldPosition(A);
+            markerRootB.getWorldPosition(B);
+
+            ballMesh.position.copy(A);
+            ballMesh.rotation.z += 0.1;
+
+            // if (ballMesh.position.x == A.x){
+            //     ballMesh.position.x += 0.1;
+            // }
+            // else if(ballMesh.position.x == B.x){
+            //     ballMesh.position.x += 0.1;
+            // }
+            
+            console.log('A: '+ A.x + ' ' + A.y + ' ' + A.z);
+            console.log('Ball: '+ ballMesh.position.x + ' ' + ballMesh.position.y + ' ' + ballMesh.position.z);
+            console.log('B: '+ B.x + ' ' + B.y + ' ' + B.z);
         }
     }
-    // create a function p() that passes through the points (0,p0), (1,p1), (2,p2)
-    //  and evaluate that function at time t.
-    function parabolaEvaluate(p0, p1, p2, t)
-    {
-        //return ( 0.3*(p0 - 2*p1 + p2) )*t*t + ( -0.3*(3*p0 - 4*p1 + p2) )*t + ( p0 );
-        return ( 0.5*(p0 - 2*p1 + p2) )*t*t + ( -0.5*(3*p0 - 4*p1 + p2) )*t + ( p0 );
-    }
-    function parabolicPath( pointStart, pointEnd, time )
-    {
-        let pointMiddle = new THREE.Vector3().addVectors( pointStart, pointEnd ).multiplyScalar(0.5).add( new THREE.Vector3(0,0,0) );
-        return new THREE.Vector3(
-            parabolaEvaluate( pointStart.x, pointMiddle.x, pointEnd.x, time ),0,
-            //parabolaEvaluate( pointStart.y, pointMiddle.y, pointEnd.y, time ),
-            parabolaEvaluate( pointStart.z, pointMiddle.z, pointEnd.z, time )
-        );
-    }
+
     function render()
     {
         renderer.render( scene, camera );
