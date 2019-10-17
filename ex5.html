@@ -51,8 +51,9 @@
         renderer.domElement.style.left = '0px'
         document.body.appendChild( renderer.domElement );
         clock = new THREE.Clock();
-        deltaTime = 0;
+        //deltaTime = 0;
         totalTime = 0;
+        deltaTime = 0.02;
 
         ////////////////////////////////////////////////////////////
         // setup arToolkitSource
@@ -179,9 +180,9 @@
 
             moveBall(A, B, ballMesh.position);
 
-            console.log('A: '+ A.x + ' ' + A.y + ' ' + A.z);
-            console.log('Ball: '+ ballMesh.position.x + ' ' + ballMesh.position.y + ' ' + ballMesh.position.z);
-            console.log('B: '+ B.x + ' ' + B.y + ' ' + B.z);
+            //console.log('A: '+ A.x + ' ' + A.y + ' ' + A.z);
+            //console.log('Ball: '+ ballMesh.position.x + ' ' + ballMesh.position.y + ' ' + ballMesh.position.z);
+            //console.log('B: '+ B.x + ' ' + B.y + ' ' + B.z);
             //console.log('dir: '+ dir.x + ' ' + dir.y + ' ' + dir.z);
         }
         else if (markerRootA.visible == false && markerRootB.visible == true){
@@ -190,7 +191,7 @@
             ballMesh.position.copy(B);
             ballMesh.rotation.z += 0.1;
 
-            console.log('mkA: '+ markerRootA.visible);
+            //console.log('mkA: '+ markerRootA.visible);
         }
         else if (markerRootA.visible == true && markerRootB.visible == false){
 
@@ -198,7 +199,7 @@
             ballMesh.position.copy(A);
             ballMesh.rotation.z += 0.1;
 
-            console.log('mkB: '+ markerRootB.visible);
+            //console.log('mkB: '+ markerRootB.visible);
         }else{
             ballMesh.position.set(0, 0, 0);
         }
@@ -221,14 +222,14 @@
                 console.log('s: '+ s.x + ' ' + s.y + ' ' + s.z);
             }
 
-            console.log('begin A: '+ begin.x + ' ' + begin.y + ' ' + begin.z);
-            console.log('end B: '+ end.x + ' ' + end.y + ' ' + end.z);
+            //console.log('begin A: '+ begin.x + ' ' + begin.y + ' ' + begin.z);
+            //console.log('end B: '+ end.x + ' ' + end.y + ' ' + end.z);
         }
         else if(ballMesh.position.equals(B)){
             begin = B;
             end = A;
-            console.log('begin B: '+ begin.x + ' ' + begin.y + ' ' + begin.z);
-            console.log('end A: '+ end.x + ' ' + end.y + ' ' + end.z);
+            //console.log('begin B: '+ begin.x + ' ' + begin.y + ' ' + begin.z);
+            //console.log('end A: '+ end.x + ' ' + end.y + ' ' + end.z);
         }
     }
 
@@ -239,8 +240,11 @@
     function animate()
     {
         requestAnimationFrame(animate);
-        deltaTime = clock.getDelta();
         totalTime += deltaTime;
+        if (totalTime <= 0 || totalTime >=1)
+            deltaTime = -deltaTime;
+        console.log('delta: '+ deltaTime);
+        console.log('totalTime: '+ totalTime);
         update();
         render();
     }

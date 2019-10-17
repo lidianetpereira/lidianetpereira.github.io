@@ -172,36 +172,6 @@
         // setup scene
         ////////////////////////////////////////////////////////////
 
-        // sceneGroupModel1 = new THREE.Mesh(
-        //     new THREE.CubeGeometry(1.25,1.25,1.25),
-        //     new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.5})
-        // );
-        // markerLetterA.add( sceneGroupModel1 );
-        //
-        // sceneGroupModel2 = new THREE.Mesh(
-        //     new THREE.CubeGeometry(1.25,1.25,1.25),
-        //     new THREE.MeshBasicMaterial({color:0xff8800, transparent:true, opacity:0.5})
-        // );
-        // markerLetterB.add( sceneGroupModel2 );
-        //
-        // sceneGroupModel3 = new THREE.Mesh(
-        //     new THREE.CubeGeometry(1.25,1.25,1.25),
-        //     new THREE.MeshBasicMaterial({color:0xffff00, transparent:true, opacity:0.5})
-        // );
-        // markerLetterC.add( sceneGroupModel3 );
-        //
-        // sceneGroupModel4 = new THREE.Mesh(
-        //     new THREE.CubeGeometry(1.25,1.25,1.25),
-        //     new THREE.MeshBasicMaterial({color:0x00cc00, transparent:true, opacity:0.5})
-        // );
-        // markerLetterD.add( sceneGroupModel4 );
-        //
-        // sceneGroupModel5 = new THREE.Mesh(
-        //     new THREE.CubeGeometry(1.25,1.25,1.25),
-        //     new THREE.MeshBasicMaterial({color:0x0000ff, transparent:true, opacity:0.5})
-        // );
-        // markerLetterG.add( sceneGroupModel5 );
-
         let light = new THREE.PointLight( 0xffffff, 1, 100 );
         light.position.set( 0,4,0 ); // default; light shining from top
         light.castShadow = true;
@@ -212,7 +182,7 @@
             'models/BrainStem.gltf',
             ( gltf ) => {
                 // called when the resource is loaded
-
+                gltf.scene.name = 'brainStem';
                 const mixer = new THREE.AnimationMixer(gltf.scene);
                 // animations is a list of THREE.AnimationClip
                 for (const anim of gltf.animations) {
@@ -235,7 +205,7 @@
             'models/CesiumMan.gltf',
             ( gltf ) => {
                 // called when the resource is loaded
-
+                gltf.scene.name = 'cesiumMan';
                 const mixer = new THREE.AnimationMixer(gltf.scene);
                 // animations is a list of THREE.AnimationClip
                 for (const anim of gltf.animations) {
@@ -258,7 +228,7 @@
             'models/CesiumMilkTruck.gltf',
             ( gltf ) => {
                 // called when the resource is loaded
-
+                gltf.scene.name = 'cesiumTruck';
                 const mixer = new THREE.AnimationMixer(gltf.scene);
                 // animations is a list of THREE.AnimationClip
                 for (const anim of gltf.animations) {
@@ -278,16 +248,17 @@
         );
 
         loader.load(
-            'models/Monster.gltf',
+            'models/BarramundiFish.glb',
             ( gltf ) => {
                 // called when the resource is loaded
-
+                gltf.scene.name = 'monster';
                 const mixer = new THREE.AnimationMixer(gltf.scene);
                 // animations is a list of THREE.AnimationClip
                 for (const anim of gltf.animations) {
                     mixer.clipAction(anim).play();
                 }
-                gltf.scene.scale.set(0.1,0.1,0.1);
+                gltf.scene.scale.set(10,10,10);
+                gltf.scene.rotation.y = Math.PI/2;
                 sceneGroupModel4.add( gltf.scene );
                 mixers.push(mixer);
             },
@@ -305,7 +276,7 @@
             'models/RiggedFigure.gltf',
             ( gltf ) => {
                 // called when the resource is loaded
-
+                gltf.scene.name = 'rigged';
                 const mixer = new THREE.AnimationMixer(gltf.scene);
                 // animations is a list of THREE.AnimationClip
                 for (const anim of gltf.animations) {
@@ -350,31 +321,37 @@
             sceneGroupModel = sceneGroupModel1;
 
             if(markerControlsA.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('brainStem').position.set(2.5,0,1);
                 markerLetterA.add( sceneGroupModel );
                 scene.add(markerLetterA);
             }
 
             else if(markerControlsB.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('brainStem').position.set(0,0,1);
                 markerLetterB.add( sceneGroupModel );
                 scene.add(markerLetterB);
             }
 
             else if(markerControlsC.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('brainStem').position.set(-2.5,0,1);
                 markerLetterC.add( sceneGroupModel );
                 scene.add(markerLetterC);
             }
 
             else if(markerControlsD.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('brainStem').position.set(2.5,0,-1);
                 markerLetterD.add( sceneGroupModel );
                 scene.add(markerLetterD);
             }
 
             else if(markerControlsF.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('brainStem').position.set(-2.5,0,-1);
                 markerLetterF.add( sceneGroupModel );
                 scene.add(markerLetterF);
             }
 
             else if(markerControlsG.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('brainStem').position.set(0,0,-1);
                 markerLetterG.add( sceneGroupModel );
                 scene.add(markerLetterG);
             }
@@ -391,31 +368,37 @@
             sceneGroupModel = sceneGroupModel2;
 
             if(markerControlsA.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumMan').position.set(2.5,0,1);
                 markerLetterA.add( sceneGroupModel );
                 scene.add(markerLetterA);
             }
 
             else if(markerControlsB.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumMan').position.set(0,0,1);
                 markerLetterB.add( sceneGroupModel );
                 scene.add(markerLetterB);
             }
 
             else if(markerControlsC.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumMan').position.set(-2.5,0,1);
                 markerLetterC.add( sceneGroupModel );
                 scene.add(markerLetterC);
             }
 
             else if(markerControlsD.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumMan').position.set(2.5,0,-1);
                 markerLetterD.add( sceneGroupModel );
                 scene.add(markerLetterD);
             }
 
             else if(markerControlsF.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumMan').position.set(-2.5,0,-1);
                 markerLetterF.add( sceneGroupModel );
                 scene.add(markerLetterF);
             }
 
             else if(markerControlsG.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumMan').position.set(0,0,-1);
                 markerLetterG.add( sceneGroupModel );
                 scene.add(markerLetterG);
             }
@@ -432,31 +415,37 @@
             sceneGroupModel = sceneGroupModel3;
 
             if(markerControlsA.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumTruck').position.set(2.5,0,1);
                 markerLetterA.add( sceneGroupModel );
                 scene.add(markerLetterA);
             }
 
             else if(markerControlsB.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumTruck').position.set(0,0,1);
                 markerLetterB.add( sceneGroupModel );
                 scene.add(markerLetterB);
             }
 
             else if(markerControlsC.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumTruck').position.set(-2.5,0,1);
                 markerLetterC.add( sceneGroupModel );
                 scene.add(markerLetterC);
             }
 
             else if(markerControlsD.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumTruck').position.set(2.5,0,-1);
                 markerLetterD.add( sceneGroupModel );
                 scene.add(markerLetterD);
             }
 
             else if(markerControlsF.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumTruck').position.set(-2.5,0,-1);
                 markerLetterF.add( sceneGroupModel );
                 scene.add(markerLetterF);
             }
 
             else if(markerControlsG.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('cesiumTruck').position.set(0,0,-1);
                 markerLetterG.add( sceneGroupModel );
                 scene.add(markerLetterG);
             }
@@ -473,31 +462,37 @@
             sceneGroupModel = sceneGroupModel4;
 
             if(markerControlsA.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('monster').position.set(2.5,0,1);
                 markerLetterA.add( sceneGroupModel );
                 scene.add(markerLetterA);
             }
 
             else if(markerControlsB.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('monster').position.set(0,0,1);
                 markerLetterB.add( sceneGroupModel );
                 scene.add(markerLetterB);
             }
 
             else if(markerControlsC.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('monster').position.set(-2.5,0,1);
                 markerLetterC.add( sceneGroupModel );
                 scene.add(markerLetterC);
             }
 
             else if(markerControlsD.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('monster').position.set(2.5,0,-1);
                 markerLetterD.add( sceneGroupModel );
                 scene.add(markerLetterD);
             }
 
             else if(markerControlsF.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('monster').position.set(-2.5,0,-1);
                 markerLetterF.add( sceneGroupModel );
                 scene.add(markerLetterF);
             }
 
             else if(markerControlsG.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('monster').position.set(0,0,-1);
                 markerLetterG.add( sceneGroupModel );
                 scene.add(markerLetterG);
             }
@@ -514,31 +509,37 @@
             sceneGroupModel = sceneGroupModel5;
 
             if(markerControlsA.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('rigged').position.set(2.5,0,1);
                 markerLetterA.add( sceneGroupModel );
                 scene.add(markerLetterA);
             }
 
             else if(markerControlsB.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('rigged').position.set(0,0,1);
                 markerLetterB.add( sceneGroupModel );
                 scene.add(markerLetterB);
             }
 
             else if(markerControlsC.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('rigged').position.set(-2.5,0,1);
                 markerLetterC.add( sceneGroupModel );
                 scene.add(markerLetterC);
             }
 
             else if(markerControlsD.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('rigged').position.set(2.5,0,-1);
                 markerLetterD.add( sceneGroupModel );
                 scene.add(markerLetterD);
             }
 
             else if(markerControlsF.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('rigged').position.set(-2.5,0,-1);
                 markerLetterF.add( sceneGroupModel );
                 scene.add(markerLetterF);
             }
 
             else if(markerControlsG.object3d.visible){
+                var obj = sceneGroupModel.getObjectByName('rigged').position.set(0,0,-1);
                 markerLetterG.add( sceneGroupModel );
                 scene.add(markerLetterG);
             }
