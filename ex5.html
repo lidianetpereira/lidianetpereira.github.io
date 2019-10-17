@@ -25,11 +25,6 @@
     var B = new THREE.Vector3();
     var dir = new THREE.Vector3();
     var s = new THREE.Vector3();
-    const scenepos = new THREE.Vector3();
-    var bkp = new THREE.Vector3();
-
-
-    var it = 0;
 
     let markerControls1, markerControls2;
     initialize();
@@ -51,7 +46,6 @@
         renderer.domElement.style.left = '0px'
         document.body.appendChild( renderer.domElement );
         clock = new THREE.Clock();
-        //deltaTime = 0;
         totalTime = 0;
         deltaTime = 0.02;
 
@@ -117,7 +111,6 @@
         let loader = new THREE.TextureLoader();
 
         sceneGroup = new THREE.Group();
-        //markerRootA.add(sceneGroup);
 
         let floorGeometry = new THREE.PlaneGeometry( 20,20 );
         let floorMaterial = new THREE.ShadowMaterial();
@@ -155,13 +148,6 @@
 
         let ambientLight = new THREE.AmbientLight( 0x666666 );
         sceneGroup.add( ambientLight );
-        // let helper = new THREE.CameraHelper( light.shadow.camera );
-        // sceneGroup.add( helper );
-        //
-        // // default normal of a plane is 0,0,1. Apply mesh rotation to it.
-        // let clipPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(
-        //     new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0) );
-        // renderer.clippingPlanes = [clipPlane];
 
         scene.add(sceneGroup);
     }
@@ -224,12 +210,6 @@
 
             //console.log('begin A: '+ begin.x + ' ' + begin.y + ' ' + begin.z);
             //console.log('end B: '+ end.x + ' ' + end.y + ' ' + end.z);
-        }
-        else if(ballMesh.position.equals(B)){
-            begin = B;
-            end = A;
-            //console.log('begin B: '+ begin.x + ' ' + begin.y + ' ' + begin.z);
-            //console.log('end A: '+ end.x + ' ' + end.y + ' ' + end.z);
         }
     }
 
