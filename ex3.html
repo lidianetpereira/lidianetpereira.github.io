@@ -9,39 +9,38 @@
 
 <!-- start the body of your page -->
 <body style='margin : 0px; overflow: hidden;'>
+<script>
+    obj = JSON.parse(localStorage.getItem('teste'));
+    console.log(obj);
+
+    AFRAME.registerComponent('gltf', {
+        init: function(){
+            let src;
+            src = obj;
+            console.log("passou aqui");
+        }
+    });
+</script>
 <!-- add some info at the top of the page -->
 
 <!-- Define your 3d scene and enabled ar.js -->
 <a-scene embedded arjs='trackingMethod: best; debugUIEnabled: false;'>
-
     <!-- Create a anchor to attach your augmented reality -->
-    <a-anchor hit-testing-enabled='false'>
 
-        <!-- Add your augmented reality here -->
-        <a-entity id="pai" position="0 1 0">
-            <a-sphere id="Sol" radius=".5" material="shader: flat; src: images/2k_sun.jpg">
-                <a-entity id="luz" light="type: point;
-							castShadow: true;
-							intensity: 1.5;">
-                </a-entity>
-            </a-sphere>
-            <a-entity animation="property: rotation; to: 0 360 0; loop: true; easing: linear; dur: 15000">
-                <a-sphere id="planeta1" radius=".1"  material="src: images/2k_mercury.jpg" animation="property: rotation; to: 0 360 0; loop: true; easing: linear; dur: 5000" position="0 0 1" shadow></a-sphere>
-            </a-entity>
-            <a-entity animation="property: rotation; to: 0 360 0; loop: true; easing: linear; dur: 5000">
-                <a-sphere id="planeta2" radius=".2"  material="src: images/2k_venus_surface.jpg" animation="property: rotation; to: 0 360 0; loop: true; easing: linear; dur: 10000" position="0 0 2" shadow></a-sphere>
-            </a-entity>
-            <a-entity animation="property: rotation; to: 0 360 0; loop: true; easing: linear; dur: 10000">
-                <a-sphere id="planeta3" radius=".3"  material="src: images/2k_earth_daymap.jpg" animation="property: rotation; to: 0 360 0; loop: true; easing: linear; dur: 15000" position="0 0 2.5" shadow></a-sphere>
-            </a-entity>
-        </a-entity>
-
-    </a-anchor>
+    <a-gltf-model id="gltf" position="0 0 0"></a-gltf-model>
 
     <!-- Define a static camera -->
     <a-camera-static/>
 
 </a-scene>
+
+<!--<script>-->
+<!--    obj = JSON.parse(localStorage.getItem('teste'));-->
+
+<!--    var el = document.querySelector('#gltf');-->
+<!--    el.setAttribute('gltf-model', obj);-->
+<!--    console.log(el);-->
+<!--</script>-->
 </body>
 
 </html>
