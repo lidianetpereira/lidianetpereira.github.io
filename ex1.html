@@ -7,6 +7,7 @@
     <script src='js/three.min.js'></script>
     <script src='js/OBJLoader.js'></script>
     <script src='js/MTLLoader.js'></script>
+    <script src='js/GLTFExporter.js'></script>
     <!-- include jsartookit -->
     <script src="jsartoolkit5/artoolkit.min.js"></script>
     <script src="jsartoolkit5/artoolkit.api.js"></script>
@@ -25,6 +26,8 @@
         var markerRoot1, markerRoot2;
 
         var meshModel, meshLight;
+
+        var exporter = new THREE.GLTFExporter();
 
         initialize();
         animate();
@@ -98,7 +101,7 @@
 
             // build markerControls
             markerRoot1 = new THREE.Group();
-            scene.add(markerRoot1);
+            //scene.add(markerRoot1);
             let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
                 type: 'pattern', patternUrl: "data/hiro.patt",
             })
@@ -171,6 +174,20 @@
             lightSphere.position.copy( light.position );
             sceneGroupKanji.add( lightSphere );
 
+            var options = {
+                trs: false,
+                onlyVisible: false,
+                truncateDrawRange: true,
+                binary: false,
+                forceIndices: false,
+                forcePowerOfTwoTextures: false,
+                maxTextureSize: Infinity // To prevent NaN value
+            };
+
+            exporter.parse( scene, function ( gltf ) {
+                console.log( gltf );
+            }, options );
+            localStorage.setItem('cena', JSON.stringify(exporter));
         }
 
         function animate()
